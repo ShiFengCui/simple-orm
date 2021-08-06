@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: manuale-medium
+font link: https://fonts.google.com/specimen/Manuale
+font author: Omnibus Type
+font author site: http://www.omnibus-type.com/
+
+
+icon designer: Alfredo @ IconsAlfredo.com
+icon designer link: /AlfredoCreates
+        
+{"bg":"#F3F3EF","icon-gradient-0":"#945069","icon-gradient-1":"#86C866","font":"#2A2F1F","slogan":"#3e4333"}
+      
