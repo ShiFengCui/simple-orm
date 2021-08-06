@@ -128,5 +128,4 @@ fabric.properties
 .idea/qaplug_profiles.xml
 .idea/salad-orm.iml
 .idea/vcs.xml
-pom.xml
-src/
+
