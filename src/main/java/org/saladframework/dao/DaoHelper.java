@@ -1,3 +1,17 @@
+/*
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
 package org.saladframework.dao;
 
 import java.lang.reflect.Field;
@@ -57,7 +71,7 @@ public abstract class DaoHelper {
      * @return DAO实例
      * @throws Exception
      */
-    public static DaoHelper createIntrance(String configPath) throws Exception {
+    public static DaoHelper createInstance(String configPath) throws Exception {
         return createDAO(configPath);
     }
 
@@ -75,11 +89,11 @@ public abstract class DaoHelper {
     private static DaoHelper createDAO(String configPath) throws Exception {
 
         DruidHelper ch = DruidHelper.getInstance(configPath);
-        IStatementCreater creater = new MysqlPSCreater();
+        IStatementCreater crater = new MysqlPSCreater();
 
         DaoHelper daoHelper = new SimpleDAOHelper();
         daoHelper.connHelper = ch;
-        daoHelper.sdmtCreater = creater;
+        daoHelper.sdmtCreater = crater;
         logger.info("create DAOHelper success!");
         return daoHelper;
     }
