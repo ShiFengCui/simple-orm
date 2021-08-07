@@ -5,7 +5,7 @@
 ![GitHub issues](https://img.shields.io/github/issues/ShiFengCui/salad-orm)
 ![GitHub Repo stars](https://img.shields.io/github/stars/ShiFengCui/salad-orm?style=social)
 
-![image](https://github.com/ShiFengCui/salad-orm/blob/master/salad-orm-logo/cover.png)
+![cover](https://user-images.githubusercontent.com/36906841/128585436-495d568b-0b68-4209-b290-58253f34ea4d.png)
 
 
 **更适合的人群或者场景**
