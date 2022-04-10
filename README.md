@@ -1,5 +1,5 @@
 
-## Salad ORM - 简单小巧强大的orm框架
+## simple ORM - 简单小巧强大的orm框架
 ![GitHub last commit](https://img.shields.io/github/last-commit/ShiFengCui/salad-orm)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ShiFengCui/salad-orm)
 ![GitHub issues](https://img.shields.io/github/issues/ShiFengCui/salad-orm)
