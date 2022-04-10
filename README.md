@@ -1,5 +1,5 @@
 
-## simple ORM - 简单小巧强大的orm框架
+## Simple ORM - 简单小巧强大的orm框架
 ![GitHub last commit](https://img.shields.io/github/last-commit/ShiFengCui/salad-orm)
 ![GitHub repo size](https://img.shields.io/github/repo-size/ShiFengCui/salad-orm)
 ![GitHub issues](https://img.shields.io/github/issues/ShiFengCui/salad-orm)
@@ -7,13 +7,16 @@
 
 ![cover](https://user-images.githubusercontent.com/36906841/128585436-495d568b-0b68-4209-b290-58253f34ea4d.png)
 
+## 历史
 
-**更适合的人群或者场景**
+- 2019年提交创建了此项目
+
+## 更适合的人群或者场景
 
 - 希望项目更加轻量级，快速实现对mysql增删改查操作的
 - 希望学习java jdbc操作和具体封装实现的初学者，此项目更加清晰和容易理解 
 
-#### 初始化
+## 初始化
 
 ```java
 @Slf4j
@@ -40,7 +43,7 @@ public class BaseDAO {
 }
 ```
 
-#### 创建DB服务
+## 创建DB服务
 
 ```java
 @Table(name = "tbl_user")
@@ -105,7 +108,7 @@ public class UserServiceImpl implements UserService {
             User user = BaseDAO.daoHelper.getOneByQuery(User.class, dbQuery, "*", null);
 ```
 
-#### 快速的SQL编写查询
+## 快速的SQL编写查询
 
 > 只是展示查询语法，跟商品User定义可能无关
 
