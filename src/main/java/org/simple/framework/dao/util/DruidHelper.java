@@ -37,7 +37,7 @@ import com.alibaba.druid.pool.DruidDataSourceFactory;
 public class DruidHelper {
 
     private static volatile DruidHelper druidHelper = null;
-    private static volatile DruidDataSource dataSource = null;
+    private static volatile DruidDataSource druidDataSource = null;
 
     private static final Log log = LogFactory.getLog(ConnectionHelper.class);
 
@@ -57,10 +57,14 @@ public class DruidHelper {
             InputStream is = new FileInputStream(config);
             Properties properties = new Properties();
             properties.load(is);
-            dataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(properties);
+            druidDataSource = (DruidDataSource) DruidDataSourceFactory.createDataSource(properties);
         } catch (Exception e) {
             log.error("init druid failure", e);
         }
+    }
+
+    public DruidDataSource getDruidDataSource(){
+        return druidDataSource;
     }
 
     /**
@@ -81,10 +85,10 @@ public class DruidHelper {
     }
 
     private DataSource getDataSource() {
-        if (dataSource == null) {
+        if (druidDataSource == null) {
             throw new RuntimeException("data source is null");
         }
-        return dataSource;
+        return druidDataSource;
     }
 
     /**

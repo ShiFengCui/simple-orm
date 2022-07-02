@@ -26,10 +26,13 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.simple.framework.dao.pool.SimpleDataSource;
 import org.simple.framework.dao.statement.IStatementCreater;
 import org.simple.framework.dao.statement.MysqlPSCreater;
 import org.simple.framework.dao.util.ClassHelper;
 import org.simple.framework.dao.util.DruidHelper;
+
+import javax.sql.DataSource;
 
 /**
  * @author cuishifeng
@@ -48,6 +51,8 @@ public abstract class DaoHelper {
     protected IStatementCreater sdmtCreater;
 
     protected DruidHelper connHelper;
+
+    protected SimpleDataSource simpleDataSource;
 
     /**
      * 默认查询超时时间
@@ -75,6 +80,15 @@ public abstract class DaoHelper {
         return createDAO(configPath);
     }
 
+    public static DaoHelper createInstance(DataSource dataSource) throws Exception {
+        DaoHelper daoHelper = new SimpleDAOHelper();
+        IStatementCreater crater = new MysqlPSCreater();
+        daoHelper.simpleDataSource = new SimpleDataSource(dataSource);
+        daoHelper.sdmtCreater = crater;
+        logger.info("create DAOHelper success!");
+        return daoHelper;
+    }
+
     public DruidHelper getConnHelper() {
         return connHelper;
     }
@@ -87,12 +101,10 @@ public abstract class DaoHelper {
      * @throws Exception
      */
     private static DaoHelper createDAO(String configPath) throws Exception {
-
         DruidHelper ch = DruidHelper.getInstance(configPath);
         IStatementCreater crater = new MysqlPSCreater();
-
         DaoHelper daoHelper = new SimpleDAOHelper();
-        daoHelper.connHelper = ch;
+        daoHelper.simpleDataSource = new SimpleDataSource(ch.getDruidDataSource());
         daoHelper.sdmtCreater = crater;
         logger.info("create DAOHelper success!");
         return daoHelper;
