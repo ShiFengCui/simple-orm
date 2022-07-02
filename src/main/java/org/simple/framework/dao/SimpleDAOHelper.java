@@ -55,7 +55,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createInsert(t, conn, sql, tableName);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             ps.executeUpdate();
@@ -77,7 +77,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
 
         return null;
@@ -94,7 +94,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createBatchInsert(list, conn, sql);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeBatch();
@@ -104,7 +104,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -114,7 +114,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createUpdateEntity(t, conn, sql);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeUpdate();
@@ -123,7 +123,7 @@ class SimpleDAOHelper extends DaoHelper {
             throw e;
         } finally {
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -142,7 +142,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createUpdateByID(cls, conn, updateKV.getKvPairs(), sql, ids);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeUpdate();
@@ -151,7 +151,7 @@ class SimpleDAOHelper extends DaoHelper {
             throw e;
         } finally {
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -174,7 +174,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createUpdateByQuery(cls, conn, updateKV.getKvPairs(), query, sql);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeUpdate();
@@ -183,7 +183,7 @@ class SimpleDAOHelper extends DaoHelper {
             throw e;
         } finally {
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -197,7 +197,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createDeleteByID(cls, conn, ids, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             return ps.executeUpdate();
@@ -206,7 +206,7 @@ class SimpleDAOHelper extends DaoHelper {
             throw e;
         } finally {
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -223,7 +223,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createDeleteByQuery(cls, conn, query, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             return ps.executeUpdate();
@@ -232,7 +232,7 @@ class SimpleDAOHelper extends DaoHelper {
             throw e;
         } finally {
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -269,7 +269,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createGetByID(cls, conn, ids, columns, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
@@ -280,7 +280,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -308,7 +308,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createGetByQuery(cls, conn, query, columns, page, pageSize, orderBy, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
@@ -319,7 +319,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -331,7 +331,7 @@ class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
 
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createGetCountByQuery(cls, conn, query, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
@@ -344,7 +344,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
 
         return 0;
@@ -357,7 +357,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
 
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = conn.prepareStatement(fullSQL.toSql());
 
             List<Object> values = fullSQL.values();
@@ -376,7 +376,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
 
         return 0;
@@ -389,7 +389,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = sdmtCreater.createSelectByQuery(conn, querySQL, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
@@ -400,7 +400,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -410,7 +410,7 @@ class SimpleDAOHelper extends DaoHelper {
         ResultSet rs = null;
         PreparedStatement ps = null;
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = conn.prepareStatement(sql);
             if (params != null && params.length > 0) {
                 for (int i = 0; i < params.length; i++) {
@@ -428,7 +428,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -439,7 +439,7 @@ class SimpleDAOHelper extends DaoHelper {
         ResultSet rs = null;
         PreparedStatement ps = null;
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
 
@@ -466,7 +466,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -476,7 +476,7 @@ class SimpleDAOHelper extends DaoHelper {
         ResultSet rs = null;
         PreparedStatement ps = null;
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
 
@@ -506,7 +506,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -516,7 +516,7 @@ class SimpleDAOHelper extends DaoHelper {
         ResultSet rs = null;
         PreparedStatement ps = null;
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = conn.prepareStatement(sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
 
@@ -551,7 +551,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
     }
 
@@ -562,7 +562,7 @@ class SimpleDAOHelper extends DaoHelper {
         PreparedStatement ps = null;
 
         try {
-            conn = connHelper.getConnection();
+            conn = simpleDataSource.getConnection();
             ps = conn.prepareStatement(sql);
 
             if (params != null) {
@@ -582,7 +582,7 @@ class SimpleDAOHelper extends DaoHelper {
         } finally {
             JdbcUtil.closeResultSet(rs);
             JdbcUtil.closeStatement(ps);
-            connHelper.release(conn);
+            simpleDataSource.release(conn);
         }
 
         return 0;
