@@ -33,6 +33,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <hikari.version>5.0.1</hikari.version>
   </properties>
 
   <dependencies>
@@ -59,6 +60,13 @@
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
       <version>8.0.29</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.zaxxer</groupId>
+      <artifactId>HikariCP</artifactId>
+      <version>${hikari.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>

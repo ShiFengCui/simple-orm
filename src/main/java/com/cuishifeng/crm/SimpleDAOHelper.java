@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.cuishifeng.crm.util.ClassHelper;
+import com.cuishifeng.crm.util.GlobalConfigUtils;
 import com.cuishifeng.crm.util.JdbcUtil;
 import com.cuishifeng.crm.util.OutSQL;
 import com.cuishifeng.crm.util.StringChecker;
@@ -37,7 +38,11 @@ import com.cuishifeng.crm.util.StringChecker;
  * @author CuiShiFeng
  * @date
  */
-class SimpleDAOHelper extends DaoHelper {
+public class SimpleDAOHelper extends DaoHelper {
+
+    public SimpleDAOHelper() {
+        GlobalConfigUtils.init(this);
+    }
 
     @Override
     public <I, T> I insert(T t) throws Exception {

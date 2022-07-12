@@ -81,7 +81,7 @@ public abstract class DaoHelper {
     }
 
     public static DaoHelper createInstance(DataSource dataSource) throws Exception {
-        DaoHelper daoHelper = new SimpleDAOHelper();
+        SimpleDAOHelper daoHelper = new SimpleDAOHelper();
         IStatementCreater crater = new MysqlPSCreater();
         daoHelper.simpleDataSource = new SimpleDataSource(dataSource);
         daoHelper.sdmtCreater = crater;
