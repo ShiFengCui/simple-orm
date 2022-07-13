@@ -31,6 +31,9 @@ public class SQLConstants {
     public static final String OUTER = " OUTER ";
     public static final String JOIN = " JOIN ";
     public static final String BETWEEN = " BETWEEN ";
+
+    public static final String NOT_BETWEEN = " NOT BETWEEN ";
+
     public static final String AND = " AND ";
     public static final String OR = " OR ";
 
@@ -41,6 +44,9 @@ public class SQLConstants {
     public static final String COUNT = " COUNT ";
 
     public static final String LIKE = " LIKE ";
+
+    public static final String NOT_LIKE = " NOT LIKE ";
+
     public static final String LIMIT = " LIMIT ";
     public static final String EQUALS = " = ";
     public static final String NO_EQUALS = " != ";
@@ -48,6 +54,8 @@ public class SQLConstants {
     public static final String VERTICAL_BAR = " | ";
     public static final String QUESTION_MARK = " ? ";
     public static final String QUESTION_MARK2 = " '?' ";
+
+    public static final String PERCENT = "%";
 
     public static final String IS_NULL = " is null ";
     public static final String IS_NOT_NULL = " is not null ";

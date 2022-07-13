@@ -39,7 +39,9 @@ import static com.cuishifeng.crm.model.SQLConstants.LESS;
 import static com.cuishifeng.crm.model.SQLConstants.LESS_EQUALS;
 import static com.cuishifeng.crm.model.SQLConstants.LIKE;
 import static com.cuishifeng.crm.model.SQLConstants.LIMIT;
+import static com.cuishifeng.crm.model.SQLConstants.NOT_BETWEEN;
 import static com.cuishifeng.crm.model.SQLConstants.NOT_IN;
+import static com.cuishifeng.crm.model.SQLConstants.NOT_LIKE;
 import static com.cuishifeng.crm.model.SQLConstants.NO_EQUALS;
 import static com.cuishifeng.crm.model.SQLConstants.ON;
 import static com.cuishifeng.crm.model.SQLConstants.OUTER;
@@ -59,7 +61,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
 
 import com.cuishifeng.crm.model.SQLConstants;
 import com.cuishifeng.crm.util.StringChecker;
@@ -156,6 +157,13 @@ public class DbQuery {
 
     public DbQuery between(Object param1, Object param2) {
         sql.append(BETWEEN).append(QUESTION_MARK).append(AND).append(QUESTION_MARK);
+        values.add(param1);
+        values.add(param2);
+        return this;
+    }
+
+    public DbQuery notBetween(Object param1, Object param2) {
+        sql.append(NOT_BETWEEN).append(QUESTION_MARK).append(AND).append(QUESTION_MARK);
         values.add(param1);
         values.add(param2);
         return this;
@@ -275,6 +283,12 @@ public class DbQuery {
         return this;
     }
 
+    public DbQuery notLike(Object value) {
+        sql.append(NOT_LIKE).append(QUESTION_MARK);
+        values.add(value);
+        return this;
+    }
+
     public DbQuery and() {
         if (sql.length() > INTEGER_ZERO && !sql.toString().trim().endsWith(WHERE)) {
             sql.append(AND);
@@ -374,5 +388,4 @@ public class DbQuery {
     public boolean isEmpty() {
         return sql.length() == INTEGER_ZERO;
     }
-
 }
