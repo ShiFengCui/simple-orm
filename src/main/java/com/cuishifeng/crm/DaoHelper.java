@@ -48,7 +48,7 @@ public abstract class DaoHelper {
      */
     protected static final Log logger = LogFactory.getLog(DaoHelper.class);
 
-    protected IStatementCreater sdmtCreater;
+    protected IStatementCreater iStatementCreater;
 
     protected DruidHelper connHelper;
 
@@ -76,15 +76,15 @@ public abstract class DaoHelper {
      * @return DAO实例
      * @throws Exception
      */
-    public static DaoHelper createInstance(String configPath) throws Exception {
+    public static SimpleDAOHelper createInstance(String configPath) throws Exception {
         return createDAO(configPath);
     }
 
-    public static DaoHelper createInstance(DataSource dataSource) throws Exception {
+    public static SimpleDAOHelper createInstance(DataSource dataSource) throws Exception {
         SimpleDAOHelper daoHelper = new SimpleDAOHelper();
         IStatementCreater crater = new MysqlPSCreater();
         daoHelper.simpleDataSource = new SimpleDataSource(dataSource);
-        daoHelper.sdmtCreater = crater;
+        daoHelper.iStatementCreater = crater;
         logger.info("create DAOHelper success!");
         return daoHelper;
     }
@@ -100,12 +100,12 @@ public abstract class DaoHelper {
      * @return
      * @throws Exception
      */
-    private static DaoHelper createDAO(String configPath) throws Exception {
+    private static SimpleDAOHelper createDAO(String configPath) throws Exception {
         DruidHelper ch = DruidHelper.getInstance(configPath);
         IStatementCreater crater = new MysqlPSCreater();
-        DaoHelper daoHelper = new SimpleDAOHelper();
+        SimpleDAOHelper daoHelper = new SimpleDAOHelper();
         daoHelper.simpleDataSource = new SimpleDataSource(ch.getDruidDataSource());
-        daoHelper.sdmtCreater = crater;
+        daoHelper.iStatementCreater = crater;
         logger.info("create DAOHelper success!");
         return daoHelper;
     }

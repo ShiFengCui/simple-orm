@@ -22,7 +22,7 @@ import com.cuishifeng.crm.annotation.Table;
  * Created on 2022-07-12
  */
 @Table(name = "user")
-public class User extends TableDaoService<User> {
+public class User extends SQLTemplate<User> {
 
     @Id
     private long id;

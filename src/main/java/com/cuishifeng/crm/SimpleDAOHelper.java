@@ -28,6 +28,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 import com.cuishifeng.crm.util.ClassHelper;
 import com.cuishifeng.crm.util.GlobalConfigUtils;
 import com.cuishifeng.crm.util.JdbcUtil;
@@ -61,7 +65,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createInsert(t, conn, sql, tableName);
+            ps = iStatementCreater.createInsert(t, conn, sql, tableName);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             ps.executeUpdate();
 
@@ -100,7 +104,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createBatchInsert(list, conn, sql);
+            ps = iStatementCreater.createBatchInsert(list, conn, sql);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeBatch();
         } catch (Exception e) {
@@ -120,7 +124,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createUpdateEntity(t, conn, sql);
+            ps = iStatementCreater.createUpdateEntity(t, conn, sql);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeUpdate();
         } catch (Exception e) {
@@ -134,21 +138,19 @@ public class SimpleDAOHelper extends DaoHelper {
 
     @Override
     public <I, T> int updateByIDList(Class<T> cls, KeyValueParis updateKV, List<I> ids) throws Exception {
-        if (ids == null || ids.size() == 0) {
-            return 0;
+        if (CollectionUtils.isEmpty(ids)) {
+            return NumberUtils.INTEGER_ZERO;
         }
-
-        if (updateKV.getKvPairs() == null || updateKV.getKvPairs().size() == 0) {
-            throw new Exception("待更新的字段不能为空");
+        if (updateKV == null || MapUtils.isEmpty(updateKV.getKvPairs())) {
+            throw new Exception("the field to be updated cannot be empty");
         }
         StringChecker.checkColumn(cls, updateKV.getKvPairs());
-
         Connection conn = null;
         PreparedStatement ps = null;
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createUpdateByID(cls, conn, updateKV.getKvPairs(), sql, ids);
+            ps = iStatementCreater.createUpdateByID(cls, conn, updateKV.getKvPairs(), sql, ids);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeUpdate();
         } catch (Exception e) {
@@ -180,7 +182,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createUpdateByQuery(cls, conn, updateKV.getKvPairs(), query, sql);
+            ps = iStatementCreater.createUpdateByQuery(cls, conn, updateKV.getKvPairs(), query, sql);
             ps.setQueryTimeout(INSERT_TIMEOUT);
             return ps.executeUpdate();
         } catch (Exception e) {
@@ -203,7 +205,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createDeleteByID(cls, conn, ids, sql);
+            ps = iStatementCreater.createDeleteByID(cls, conn, ids, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             return ps.executeUpdate();
         } catch (Exception e) {
@@ -229,7 +231,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createDeleteByQuery(cls, conn, query, sql);
+            ps = iStatementCreater.createDeleteByQuery(cls, conn, query, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             return ps.executeUpdate();
         } catch (Exception e) {
@@ -275,7 +277,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createGetByID(cls, conn, ids, columns, sql);
+            ps = iStatementCreater.createGetByID(cls, conn, ids, columns, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
             return populateData(rs, cls);
@@ -314,7 +316,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createGetByQuery(cls, conn, query, columns, page, pageSize, orderBy, sql);
+            ps = iStatementCreater.createGetByQuery(cls, conn, query, columns, page, pageSize, orderBy, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
             return populateData(rs, cls);
@@ -337,7 +339,7 @@ public class SimpleDAOHelper extends DaoHelper {
 
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createGetCountByQuery(cls, conn, query, sql);
+            ps = iStatementCreater.createGetCountByQuery(cls, conn, query, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -395,7 +397,7 @@ public class SimpleDAOHelper extends DaoHelper {
         OutSQL sql = new OutSQL();
         try {
             conn = simpleDataSource.getConnection();
-            ps = sdmtCreater.createSelectByQuery(conn, querySQL, sql);
+            ps = iStatementCreater.createSelectByQuery(conn, querySQL, sql);
             ps.setQueryTimeout(QUERY_TIMEOUT);
             rs = ps.executeQuery();
             return populateData(rs, cls);

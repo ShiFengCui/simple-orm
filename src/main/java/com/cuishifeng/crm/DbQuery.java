@@ -19,19 +19,25 @@ import static com.cuishifeng.crm.model.SQLConstants.AND;
 import static com.cuishifeng.crm.model.SQLConstants.AS;
 import static com.cuishifeng.crm.model.SQLConstants.BETWEEN;
 import static com.cuishifeng.crm.model.SQLConstants.COMMA;
+import static com.cuishifeng.crm.model.SQLConstants.COUNT;
+import static com.cuishifeng.crm.model.SQLConstants.DISTINCT;
 import static com.cuishifeng.crm.model.SQLConstants.EQUALS;
+import static com.cuishifeng.crm.model.SQLConstants.ESPER;
+import static com.cuishifeng.crm.model.SQLConstants.FOR_UPDATE;
 import static com.cuishifeng.crm.model.SQLConstants.FROM;
 import static com.cuishifeng.crm.model.SQLConstants.GREATER;
 import static com.cuishifeng.crm.model.SQLConstants.GREATER_EQUALS;
+import static com.cuishifeng.crm.model.SQLConstants.GROUP_BY;
 import static com.cuishifeng.crm.model.SQLConstants.IN;
 import static com.cuishifeng.crm.model.SQLConstants.INNER;
 import static com.cuishifeng.crm.model.SQLConstants.IS_NOT_NULL;
 import static com.cuishifeng.crm.model.SQLConstants.IS_NULL;
 import static com.cuishifeng.crm.model.SQLConstants.JOIN;
 import static com.cuishifeng.crm.model.SQLConstants.LEFT;
-import static com.cuishifeng.crm.model.SQLConstants.LEFT_PARENTHESIS;
+import static com.cuishifeng.crm.model.SQLConstants.LEFT_BRACKET;
 import static com.cuishifeng.crm.model.SQLConstants.LESS;
 import static com.cuishifeng.crm.model.SQLConstants.LESS_EQUALS;
+import static com.cuishifeng.crm.model.SQLConstants.LIKE;
 import static com.cuishifeng.crm.model.SQLConstants.LIMIT;
 import static com.cuishifeng.crm.model.SQLConstants.NOT_IN;
 import static com.cuishifeng.crm.model.SQLConstants.NO_EQUALS;
@@ -40,18 +46,25 @@ import static com.cuishifeng.crm.model.SQLConstants.OUTER;
 import static com.cuishifeng.crm.model.SQLConstants.QUESTION_MARK;
 import static com.cuishifeng.crm.model.SQLConstants.QUESTION_MARK2;
 import static com.cuishifeng.crm.model.SQLConstants.RIGHT;
-import static com.cuishifeng.crm.model.SQLConstants.RIGHT_PARENTHESIS;
+import static com.cuishifeng.crm.model.SQLConstants.RIGHT_BRACKET;
 import static com.cuishifeng.crm.model.SQLConstants.SELECT;
 import static com.cuishifeng.crm.model.SQLConstants.SPACE;
+import static com.cuishifeng.crm.model.SQLConstants.VERTICAL_BAR;
 import static com.cuishifeng.crm.model.SQLConstants.WHERE;
+import static org.apache.commons.lang3.math.NumberUtils.INTEGER_ZERO;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import com.cuishifeng.crm.model.SQLConstants;
 import com.cuishifeng.crm.util.StringChecker;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 
 /**
  * 基础查询条件
@@ -64,7 +77,7 @@ public class DbQuery {
     /**
      * 查询条件的值
      */
-    private List<Object> values = new ArrayList<Object>();
+    private List<Object> values = new ArrayList<>();
     /**
      * sql
      */
@@ -76,11 +89,11 @@ public class DbQuery {
 
     public DbQuery select(String columns) throws Exception {
         String[] colAry = columns.split(COMMA);
-        for (int i = 0; i < colAry.length; i++) {
+        for (int i = INTEGER_ZERO; i < colAry.length; i++) {
             StringChecker.checkColumn(colAry[i]);
         }
 
-        sql.insert(0, SELECT);
+        sql.insert(INTEGER_ZERO, SELECT);
         if (Strings.isNullOrEmpty(columns)) {
             sql.append(ALL_COLUMNS);
         } else {
@@ -100,7 +113,7 @@ public class DbQuery {
     }
 
     public DbQuery as(String as) throws Exception {
-        if (as != null && as.length() > 0) {
+        if (as != null && as.length() > INTEGER_ZERO) {
             //as合法性检查
             StringChecker.checkTableName(as);
 
@@ -215,191 +228,134 @@ public class DbQuery {
     }
 
     public DbQuery in(Object... value) {
-        // invalid case, create a null pointer exception.
-
-        if (value.length == 1) {
-            sql.append(EQUALS).append(QUESTION_MARK);
-            values.add(value[0]);
-            return this;
-        }
-
-        sql.append(IN).append(LEFT_PARENTHESIS);
-        for (int i = 0; i < value.length; i++) {
-            if (i != 0) {
-                sql.append(COMMA);
-            }
-            sql.append(QUESTION_MARK2);
-            values.add(value[i]);
-        }
-        sql.append(RIGHT_PARENTHESIS);
-        return this;
+        ArrayList<Object> objects = Lists.newArrayList(value);
+        return in(IN, objects);
     }
 
     public DbQuery notIn(Object... value) {
-        // empty param is invalid by logic, just let the invoker get an invalid sql.
-
-        if (value.length == 1) {
-            sql.append(EQUALS).equals(QUESTION_MARK);
-            values.add(value[0]);
-            return this;
-        }
-        sql.append(NOT_IN).append(LEFT_PARENTHESIS);
-        for (int i = 0; i < value.length; i++) {
-            if (i != 0) {
-                sql.append(COMMA);
-            }
-            sql.append(QUESTION_MARK2);
-            values.add(value[i]);
-        }
-        sql.append(RIGHT_PARENTHESIS);
-        return this;
+        ArrayList<Object> objects = Lists.newArrayList(value);
+        return in(NOT_IN, objects);
     }
 
     public <T> DbQuery inCollection(Collection<T> value) {
-        // empty param is invalid by logic, just let the invoker get an invalid sql.
-        Iterator<T> iterator = value.iterator();
-        if (value.size() == 1) {
-            sql.append(EQUALS).append(QUESTION_MARK);
-            values.add(iterator.next());
-            return this;
-        }
-        sql.append(IN).append(LEFT_PARENTHESIS);
-        for (int i = 0; i < value.size(); i++) {
-            if (i != 0) {
-                sql.append(COMMA);
-            }
-            sql.append(QUESTION_MARK2);
-            values.add(iterator.next());
-        }
-        sql.append(RIGHT_PARENTHESIS);
-        return this;
+        return in(IN, value);
     }
 
     public <T> DbQuery inList(List<T> value) {
-        if (value.size() == 1) {
-            sql.append(EQUALS).append(QUESTION_MARK);
-            values.add(value.get(0));
-            return this;
-        }
-        sql.append(IN).append(LEFT_PARENTHESIS);
-        for (int i = 0; i < value.size(); i++) {
-            if (i != 0) {
-                sql.append(COMMA);
-            }
-            sql.append(QUESTION_MARK2);
-            values.add(value.get(i));
-        }
-        sql.append(RIGHT_PARENTHESIS);
-        return this;
+        return in(IN, value);
     }
 
     public <T> DbQuery notInList(List<T> value) {
+        return in(NOT_IN, value);
+    }
+
+    public <T> DbQuery in(String inType, Collection<T> value) {
+        Iterator<T> iterator = value.iterator();
         if (value.size() == 1) {
-            sql.append(" =? ");
-            values.add(value.get(0));
+            sql.append(inType.equals(IN) ? EQUALS : NO_EQUALS).append(QUESTION_MARK);
+            values.add(iterator.next());
             return this;
         }
-        sql.append("NOT IN (");
-        for (int i = 0; i < value.size(); i++) {
-            if (i != 0) {
-                sql.append(',');
+        sql.append(inType).append(LEFT_BRACKET);
+        for (int i = INTEGER_ZERO; i < value.size(); i++) {
+            if (i != INTEGER_ZERO) {
+                sql.append(COMMA);
             }
-            sql.append('?');
-            values.add(value.get(i));
+            sql.append(QUESTION_MARK2);
+            values.add(iterator.next());
         }
-
-        sql.append(RIGHT_PARENTHESIS);
+        sql.append(RIGHT_BRACKET);
         return this;
     }
 
+
     public DbQuery like(Object value) {
-        sql.append(" LIKE ? ");
+        sql.append(LIKE).append(QUESTION_MARK);
         values.add(value);
         return this;
     }
 
     public DbQuery and() {
-        if (sql.length() > 0 && !sql.toString().trim().endsWith("WHERE")) {
-            sql.append(" AND ");
+        if (sql.length() > INTEGER_ZERO && !sql.toString().trim().endsWith(WHERE)) {
+            sql.append(AND);
         }
         return this;
     }
 
     public DbQuery or() {
-        if (sql.length() > 0 && !values.isEmpty()) {
-            sql.append(" OR ");
+        if (sql.length() > INTEGER_ZERO && !values.isEmpty()) {
+            sql.append(SQLConstants.OR);
         }
         return this;
     }
 
     public DbQuery mathAnd(long value, long equal) {
-        sql.append(" & ? = ?");
+        sql.append(ESPER).append(QUESTION_MARK).append(EQUALS).append(QUESTION_MARK);
         values.add(value);
         values.add(equal);
         return this;
     }
 
     public DbQuery mathOr(long value, long equal) {
-        sql.append(" | ? = ?");
+        sql.append(VERTICAL_BAR).append(QUESTION_MARK).append(EQUALS).append(QUESTION_MARK);
         values.add(value);
         values.add(equal);
         return this;
     }
 
     public DbQuery count(String column) throws Exception {
-        sql.append(" COUNT(");
+        sql.append(COUNT).append(LEFT_BRACKET);
         sql.append(column);
-        sql.append(") ");
+        sql.append(RIGHT_BRACKET);
         return this;
     }
 
     public DbQuery distinct(String column) throws Exception {
         StringChecker.checkColumn(column);
-
-        sql.append("SELECT DISTINCT ");
+        sql.append(SELECT).append(DISTINCT);
         sql.append(column);
         return this;
     }
 
     public DbQuery distinct() throws Exception {
-        sql.append("SELECT DISTINCT ");
+        sql.append(SELECT).append(DISTINCT);
         return this;
     }
 
     public DbQuery leftBracket() {
-        sql.append(" ( ");
+        sql.append(LEFT_BRACKET);
         return this;
     }
 
     public DbQuery rightBracket() {
-        sql.append(" ) ");
+        sql.append(RIGHT);
         return this;
     }
 
     public DbQuery orderBy(String orderBy) throws Exception {
-        if (orderBy == null || orderBy.length() == 0) {
+        if (orderBy == null || orderBy.length() == INTEGER_ZERO) {
             return this;
         }
 
         StringChecker.checkOrderBy(orderBy);
 
-        if (sql.toString().trim().endsWith("WHERE")) {
+        if (sql.toString().trim().endsWith(WHERE)) {
             sql.append(" 1=1 ");
         }
-        sql.append(" ORDER BY ").append(orderBy);
+        sql.append(GROUP_BY).append(orderBy);
         return this;
     }
 
     public DbQuery groupBy(String groupby) {
-        if (sql.toString().trim().endsWith("WHERE")) {
+        if (sql.toString().trim().endsWith(WHERE)) {
             sql.append(" 1=1 ");
         }
-        sql.append(" GROUP BY ").append(groupby);
+        sql.append(GROUP_BY).append(groupby);
         return this;
     }
 
     public DbQuery forUpdate() {
-        sql.append(" FOR UPDATE ");
+        sql.append(FOR_UPDATE);
         return this;
     }
 
@@ -409,14 +365,14 @@ public class DbQuery {
     }
 
     public String toSql() {
-        if (sql.toString().trim().endsWith("WHERE")) {
-            return sql.toString().replace("WHERE", "");
+        if (sql.toString().trim().endsWith(WHERE)) {
+            return sql.toString().replace(WHERE, StringUtils.EMPTY);
         }
         return sql.toString();
     }
 
     public boolean isEmpty() {
-        return sql.length() == 0 ? true : false;
+        return sql.length() == INTEGER_ZERO;
     }
 
 }

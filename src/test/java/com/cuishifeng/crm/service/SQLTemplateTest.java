@@ -19,15 +19,14 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.cuishifeng.crm.DaoHelper;
+import com.cuishifeng.crm.DataSourceTest;
 import com.cuishifeng.crm.SimpleDAOHelper;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
  * Created on 2022-07-12
  */
-public class TableDaoServiceTest {
+public class SQLTemplateTest {
 
 
     @Test
@@ -39,16 +38,7 @@ public class TableDaoServiceTest {
 
     @Test
     public void testSaveOne() throws Exception {
-        HikariConfig config = new HikariConfig();
-        config.setJdbcUrl("jdbc:mysql://localhost:3306/db0");
-        config.setUsername("root");
-        config.setPassword("123456");
-        config.addDataSourceProperty("cachePrepStmts", "true");
-        config.addDataSourceProperty("prepStmtCacheSize", "250");
-        config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        HikariDataSource ds = new HikariDataSource(config);
-        System.out.println(ds.isRunning());
-        SimpleDAOHelper simpleDAOHelper = (SimpleDAOHelper) DaoHelper.createInstance(ds);
+        SimpleDAOHelper simpleDAOHelper = DaoHelper.createInstance(DataSourceTest.getDataSource());
         User user = new User();
         user.setName("hello");
         Object result = user.saveOne(user);

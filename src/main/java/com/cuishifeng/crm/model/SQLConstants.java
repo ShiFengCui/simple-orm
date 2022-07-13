@@ -32,6 +32,8 @@ public class SQLConstants {
     public static final String JOIN = " JOIN ";
     public static final String BETWEEN = " BETWEEN ";
     public static final String AND = " AND ";
+    public static final String OR = " OR ";
+
     public static final String FOR_UPDATE = " FOR UPDATE ";
     public static final String GROUP_BY = " GROUP BY ";
     public static final String UPDATE = " UPDATE ";
@@ -43,6 +45,7 @@ public class SQLConstants {
     public static final String EQUALS = " = ";
     public static final String NO_EQUALS = " != ";
     public static final String ESPER = " & ";
+    public static final String VERTICAL_BAR = " | ";
     public static final String QUESTION_MARK = " ? ";
     public static final String QUESTION_MARK2 = " '?' ";
 
@@ -50,8 +53,8 @@ public class SQLConstants {
     public static final String IS_NOT_NULL = " is not null ";
     public static final String IN = " IN ";
     public static final String NOT_IN = " NOT IN ";
-    public static final String LEFT_PARENTHESIS = " ( ";
-    public static final String RIGHT_PARENTHESIS = " ) ";
+    public static final String LEFT_BRACKET = " ( ";
+    public static final String RIGHT_BRACKET = " ) ";
     public static final String COMMA = ",";
     public static final String ON = " ON ";
     public static final String SPACE = " ";
