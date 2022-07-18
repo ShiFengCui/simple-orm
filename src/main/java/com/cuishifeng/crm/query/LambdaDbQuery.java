@@ -22,20 +22,31 @@ import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.cuishifeng.crm.DbQuery;
+import com.cuishifeng.crm.annotation.Table;
 import com.cuishifeng.crm.util.ColumnUtils;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
  * Created on 2022-07-13
  */
-public class LambdaDbQuery<T> implements Query<LambdaDbQuery, SFunction<T, ?>> {
+public class LambdaDbQuery<T> implements Query, SQL<LambdaDbQuery, SFunction<T, ?>> {
 
     private DbQuery dbQuery = new DbQuery();
+
+
+    private LambdaDbQuery() {
+
+    }
+
+    @Override
+    public String toQuerySQL() {
+        return null;
+    }
 
     @Override
     public LambdaDbQuery select() {
         try {
-            dbQuery.select("*");
+            dbQuery.select(" * ");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -48,6 +59,47 @@ public class LambdaDbQuery<T> implements Query<LambdaDbQuery, SFunction<T, ?>> {
             String columns = Arrays.stream(column)
                     .map(ColumnUtils::columnToString).collect(Collectors.joining(COMMA));
             dbQuery.select(columns);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return this;
+    }
+
+    @Override
+    public LambdaDbQuery update(String tableName) {
+        try {
+            dbQuery.forUpdate();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return this;
+    }
+
+    @Override
+    public LambdaDbQuery update(Class<?> tableClass) {
+        Table tableClassAnnotation = tableClass.getAnnotation(Table.class);
+        if (tableClassAnnotation != null) {
+            update(tableClassAnnotation.name());
+            return this;
+        }
+        update(ColumnUtils.convertLowerStr(tableClass.getSimpleName()));
+        return this;
+    }
+
+    @Override
+    public LambdaDbQuery from(String tableName) {
+        try {
+            dbQuery.from(tableName);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return this;
+    }
+
+    @Override
+    public LambdaDbQuery where() {
+        try {
+            dbQuery.where();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -199,4 +251,6 @@ public class LambdaDbQuery<T> implements Query<LambdaDbQuery, SFunction<T, ?>> {
         }
         return this;
     }
+
+
 }

@@ -48,9 +48,13 @@ public class ColumnUtils {
             return fieldAnnotation.name();
         }
         String property = PropertyNamer.methodToProperty(lambdaMeta.getImplMethodName());
-        String lowerCaseName = property.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
+        String lowerCaseName = convertLowerStr(property);
         columnNameCache.put(cacheName, lowerCaseName);
         return lowerCaseName;
+    }
+
+    public static String convertLowerStr(String str) {
+        return str.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
     }
 
     private static String getCacheName(LambdaMeta lambdaMeta) {

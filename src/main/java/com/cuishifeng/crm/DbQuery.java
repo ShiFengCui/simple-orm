@@ -63,6 +63,7 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 import com.cuishifeng.crm.model.SQLConstants;
+import com.cuishifeng.crm.query.Query;
 import com.cuishifeng.crm.util.StringChecker;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
@@ -74,7 +75,7 @@ import com.google.common.collect.Lists;
  * @ProjectName org.saladframework.dao
  * @date 2018-10-09
  */
-public class DbQuery {
+public class DbQuery implements Query {
     /**
      * 查询条件的值
      */
@@ -387,5 +388,10 @@ public class DbQuery {
 
     public boolean isEmpty() {
         return sql.length() == INTEGER_ZERO;
+    }
+
+    @Override
+    public String toQuerySQL() {
+        return toSql();
     }
 }
