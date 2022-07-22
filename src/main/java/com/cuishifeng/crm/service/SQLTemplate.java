@@ -16,9 +16,9 @@ package com.cuishifeng.crm.service;
 
 import java.util.List;
 
-import com.cuishifeng.crm.DbQuery;
-import com.cuishifeng.crm.KeyValueParis;
-import com.cuishifeng.crm.SimpleDAOHelper;
+import com.cuishifeng.crm.query.DbQuery;
+import com.cuishifeng.crm.model.KeyValueParis;
+import com.cuishifeng.crm.dao.SimpleDAOHelper;
 import com.cuishifeng.crm.annotation.Table;
 import com.cuishifeng.crm.util.GlobalConfigUtils;
 import com.cuishifeng.crm.util.ReflectionKit;

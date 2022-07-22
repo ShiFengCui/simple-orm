@@ -12,35 +12,30 @@
  *    limitations under the License.
  */
 
-package com.cuishifeng.crm.util;
+package com.cuishifeng.crm.core;
 
+import org.junit.Test;
+
+import com.cuishifeng.crm.DataSourceTest;
+import com.cuishifeng.crm.StartCRUD;
+import com.cuishifeng.crm.dao.DaoHelper;
 import com.cuishifeng.crm.dao.SimpleDAOHelper;
+import com.cuishifeng.crm.service.User;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
- * Created on 2022-07-12
+ * Created on 2022-07-20
  */
-public class GlobalConfigUtils {
+public class SelectTest {
 
-    private SimpleDAOHelper daoHelper;
-
-    private static volatile GlobalConfigUtils globalConfigUtils;
-
-
-    private GlobalConfigUtils(SimpleDAOHelper daoHelper) {
-        this.daoHelper = daoHelper;
+    @Test
+    public void testGetsByIDList() {
     }
 
-    public static void init(SimpleDAOHelper simpleDAOHelper) {
-        globalConfigUtils = new GlobalConfigUtils(simpleDAOHelper);
-    }
-
-    public static GlobalConfigUtils instance() {
-        return globalConfigUtils;
-    }
-
-    public SimpleDAOHelper getDaoHelper() {
-        // FastCRUD
-        return daoHelper;
+    @Test
+    public void testGetOne() throws Exception {
+        SimpleDAOHelper simpleDAOHelper = DaoHelper.createInstance(DataSourceTest.getDataSource());
+        User user1 = StartCRUD.select(User::getName).getOne(User.class, 1);
+        System.out.println(user1);
     }
 }

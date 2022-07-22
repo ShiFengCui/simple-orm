@@ -1,4 +1,4 @@
-package com.cuishifeng.crm.pool;
+package com.cuishifeng.crm.datasource;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -9,7 +9,7 @@ import java.sql.SQLException;
  * @email cuishifeng0207@163.com
  * @date 2022/07/02
  */
-public class SimpleDataSource {
+public class CrudDataSource {
 
     private DataSource dataSource;
 
@@ -18,7 +18,7 @@ public class SimpleDataSource {
      */
     private static ThreadLocal<Connection> tl = new ThreadLocal<>();
 
-    public SimpleDataSource(DataSource dataSource) {
+    public CrudDataSource(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 

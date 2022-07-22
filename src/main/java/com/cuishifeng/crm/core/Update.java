@@ -12,19 +12,11 @@
  *    limitations under the License.
  */
 
-package com.cuishifeng.crm.query;
-
-import java.util.List;
+package com.cuishifeng.crm.core;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
- * Created on 2022-07-14
+ * Created on 2022-07-20
  */
-public interface Query {
-
-    String toSql();
-
-    boolean isEmpty();
-
-    public List<Object> values();
+public class Update {
 }

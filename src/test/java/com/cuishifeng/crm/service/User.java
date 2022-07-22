@@ -18,27 +18,19 @@ import com.cuishifeng.crm.annotation.Column;
 import com.cuishifeng.crm.annotation.Id;
 import com.cuishifeng.crm.annotation.Table;
 
+import lombok.ToString;
+
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
  * Created on 2022-07-12
  */
+@ToString
 @Table(name = "user")
 public class User extends SQLTemplate<User> {
 
     @Id
     private long id;
     private String name;
-
-    @Column(name = "name_id")
-    private String order_id_name;
-
-    public String getOrder_id_name() {
-        return order_id_name;
-    }
-
-    public void setOrder_id_name(String order_id_name) {
-        this.order_id_name = order_id_name;
-    }
 
     public long getId() {
         return id;

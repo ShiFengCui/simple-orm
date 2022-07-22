@@ -18,10 +18,10 @@ import static com.cuishifeng.crm.model.SQLConstants.COMMA;
 import static com.cuishifeng.crm.model.SQLConstants.PERCENT;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.cuishifeng.crm.DbQuery;
 import com.cuishifeng.crm.annotation.Table;
 import com.cuishifeng.crm.util.ColumnUtils;
 
@@ -34,13 +34,23 @@ public class LambdaDbQuery<T> implements Query, SQL<LambdaDbQuery, SFunction<T, 
     private DbQuery dbQuery = new DbQuery();
 
 
-    private LambdaDbQuery() {
+    public LambdaDbQuery() {
 
     }
 
     @Override
-    public String toQuerySQL() {
-        return null;
+    public String toSql() {
+        return dbQuery.toSql();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return dbQuery.isEmpty();
+    }
+
+    @Override
+    public List<Object> values() {
+        return dbQuery.values();
     }
 
     @Override

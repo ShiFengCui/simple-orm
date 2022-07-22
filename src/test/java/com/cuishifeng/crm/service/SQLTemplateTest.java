@@ -18,9 +18,10 @@ package com.cuishifeng.crm.service;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.cuishifeng.crm.DaoHelper;
+import com.cuishifeng.crm.StartCRUD;
+import com.cuishifeng.crm.dao.DaoHelper;
 import com.cuishifeng.crm.DataSourceTest;
-import com.cuishifeng.crm.SimpleDAOHelper;
+import com.cuishifeng.crm.dao.SimpleDAOHelper;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
@@ -40,7 +41,7 @@ public class SQLTemplateTest {
     public void testSaveOne() throws Exception {
         SimpleDAOHelper simpleDAOHelper = DaoHelper.createInstance(DataSourceTest.getDataSource());
         User user = new User();
-        user.setName("hello");
+        user.setName("hello2");
         Object result = user.saveOne(user);
         System.out.println(result);
     }

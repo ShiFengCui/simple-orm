@@ -12,35 +12,38 @@
  *    limitations under the License.
  */
 
-package com.cuishifeng.crm.util;
+package com.cuishifeng.crm.core;
+
+import java.util.List;
 
 import com.cuishifeng.crm.dao.SimpleDAOHelper;
+import com.cuishifeng.crm.query.Where;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
- * Created on 2022-07-12
+ * Created on 2022-07-20
  */
-public class GlobalConfigUtils {
+public class Select {
 
-    private SimpleDAOHelper daoHelper;
+    private SimpleDAOHelper simpleDAOHelper;
+    private String columns;
 
-    private static volatile GlobalConfigUtils globalConfigUtils;
 
-
-    private GlobalConfigUtils(SimpleDAOHelper daoHelper) {
-        this.daoHelper = daoHelper;
+    public <T> Select(SimpleDAOHelper simpleDAOHelper, String columns) {
+        this.simpleDAOHelper = simpleDAOHelper;
+        this.columns = columns;
     }
 
-    public static void init(SimpleDAOHelper simpleDAOHelper) {
-        globalConfigUtils = new GlobalConfigUtils(simpleDAOHelper);
+    public <T, I> List<T> getBatchIds(Class<T> cls, List<I> ids) throws Exception {
+        return simpleDAOHelper.getsByIDList(cls, ids, columns);
     }
 
-    public static GlobalConfigUtils instance() {
-        return globalConfigUtils;
+    public <T, I> T getOne(Class<T> cls, I id) throws Exception {
+        return simpleDAOHelper.getByID(cls, id, columns);
     }
 
-    public SimpleDAOHelper getDaoHelper() {
-        // FastCRUD
-        return daoHelper;
+    public Where where() {
+        return new Where();
     }
+
 }

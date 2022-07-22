@@ -12,30 +12,11 @@
  *    limitations under the License.
  */
 
-package com.cuishifeng.crm.util;
+package com.cuishifeng.crm.core;
 
 /**
- * @author CuiShiFeng
- * @date
+ * @author cuishifeng <cuishifeng@kuaishou.com>
+ * Created on 2022-07-20
  */
-public class OutSQL {
-
-    private String sql;
-
-    public OutSQL() {
-
-    }
-
-    public OutSQL(String sql) {
-        this.sql = sql;
-    }
-
-    public void setSql(String sql) {
-        this.sql = sql;
-    }
-
-    public String getSql() {
-        return sql;
-    }
-
+public class Delete {
 }

@@ -26,9 +26,9 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import com.cuishifeng.crm.DbQuery;
+import com.cuishifeng.crm.query.Query;
 import com.cuishifeng.crm.util.ClassHelper;
-import com.cuishifeng.crm.util.OutSQL;
+import com.cuishifeng.crm.model.OutSQL;
 
 /**
  * @author CuiShiFeng
@@ -77,7 +77,7 @@ public class MysqlPSCreater implements IStatementCreater {
     @Override
     public PreparedStatement createDeleteByQuery(Class<?> clazz,
                                                  Connection conn,
-                                                 DbQuery query,
+                                                 Query query,
                                                  OutSQL sql) throws Exception {
         if (query == null || query.isEmpty()) {
             throw new Exception("delete必须带条件");
@@ -219,7 +219,7 @@ public class MysqlPSCreater implements IStatementCreater {
     @Override
     public PreparedStatement createGetByQuery(Class<?> clazz,
                                               Connection conn,
-                                              DbQuery query,
+                                              Query query,
                                               String columns,
                                               int page,
                                               int pageSize,
@@ -272,7 +272,7 @@ public class MysqlPSCreater implements IStatementCreater {
 
 
     @Override
-    public PreparedStatement createGetCountByQuery(Class<?> clazz, Connection conn, DbQuery query, OutSQL sql) throws Exception {
+    public PreparedStatement createGetCountByQuery(Class<?> clazz, Connection conn, Query query, OutSQL sql) throws Exception {
         StringBuffer sbSql = new StringBuffer("SELECT COUNT(0) FROM ");
         sbSql.append(ClassHelper.getTableName(clazz));
 
@@ -361,7 +361,7 @@ public class MysqlPSCreater implements IStatementCreater {
     public PreparedStatement createUpdateByQuery(Class<?> clazz,
                                                  Connection conn,
                                                  Map<String, Object> kv,
-                                                 DbQuery query,
+                                                 Query query,
                                                  OutSQL sql) throws Exception {
         if (query == null || query.isEmpty()) {
             throw new Exception("update必须带条件");
@@ -561,7 +561,7 @@ public class MysqlPSCreater implements IStatementCreater {
     }
 
     @Override
-    public PreparedStatement createSelectByQuery(Connection conn, DbQuery querySQL, OutSQL sql) throws Exception {
+    public PreparedStatement createSelectByQuery(Connection conn, Query querySQL, OutSQL sql) throws Exception {
         String select = querySQL.toSql();
 
         sql.setSql(select);

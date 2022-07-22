@@ -1,5 +1,8 @@
 package com.cuishifeng.crm;
 
+import com.cuishifeng.crm.model.KeyValue;
+import com.cuishifeng.crm.query.DbQuery;
+
 import junit.framework.TestCase;
 
 public class DaoHelperTest extends TestCase {

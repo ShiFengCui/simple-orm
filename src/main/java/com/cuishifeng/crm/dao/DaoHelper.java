@@ -12,7 +12,21 @@
  *    limitations under the License.
  */
 
-package com.cuishifeng.crm;
+/*
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
+ *
+ *        http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
+ */
+
+package com.cuishifeng.crm.dao;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -24,15 +38,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.cuishifeng.crm.pool.SimpleDataSource;
+import javax.sql.DataSource;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.cuishifeng.crm.model.KeyValue;
+import com.cuishifeng.crm.model.KeyValueParis;
+import com.cuishifeng.crm.datasource.CrudDataSource;
+import com.cuishifeng.crm.query.Query;
 import com.cuishifeng.crm.statement.IStatementCreater;
 import com.cuishifeng.crm.statement.MysqlPSCreater;
 import com.cuishifeng.crm.util.ClassHelper;
 import com.cuishifeng.crm.util.DruidHelper;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import javax.sql.DataSource;
 
 /**
  * @author cuishifeng
@@ -52,7 +70,7 @@ public abstract class DaoHelper {
 
     protected DruidHelper connHelper;
 
-    protected SimpleDataSource simpleDataSource;
+    protected CrudDataSource crudDataSource;
 
     /**
      * 默认查询超时时间
@@ -83,7 +101,7 @@ public abstract class DaoHelper {
     public static SimpleDAOHelper createInstance(DataSource dataSource) throws Exception {
         SimpleDAOHelper daoHelper = new SimpleDAOHelper();
         IStatementCreater crater = new MysqlPSCreater();
-        daoHelper.simpleDataSource = new SimpleDataSource(dataSource);
+        daoHelper.crudDataSource = new CrudDataSource(dataSource);
         daoHelper.iStatementCreater = crater;
         logger.info("create DAOHelper success!");
         return daoHelper;
@@ -104,7 +122,7 @@ public abstract class DaoHelper {
         DruidHelper ch = DruidHelper.getInstance(configPath);
         IStatementCreater crater = new MysqlPSCreater();
         SimpleDAOHelper daoHelper = new SimpleDAOHelper();
-        daoHelper.simpleDataSource = new SimpleDataSource(ch.getDruidDataSource());
+        daoHelper.crudDataSource = new CrudDataSource(ch.getDruidDataSource());
         daoHelper.iStatementCreater = crater;
         logger.info("create DAOHelper success!");
         return daoHelper;
@@ -245,7 +263,7 @@ public abstract class DaoHelper {
      * @return
      * @throws Exception
      */
-    public abstract <T> int updateByQuery(Class<T> cls, KeyValueParis updateKV, DbQuery query) throws Exception;
+    public abstract <T> int updateByQuery(Class<T> cls, KeyValueParis updateKV, Query query) throws Exception;
 
     /**
      * 跟据ID删除记录
@@ -275,7 +293,7 @@ public abstract class DaoHelper {
      * @return
      * @throws Exception
      */
-    public abstract <T> int deleteByQuery(Class<T> cls, DbQuery query) throws Exception;
+    public abstract <T> int deleteByQuery(Class<T> cls, Query query) throws Exception;
 
     /**
      * 跟据ID获取记录
@@ -318,8 +336,8 @@ public abstract class DaoHelper {
      * @throws Exception
      */
     public abstract <T, I> List<T> getsByIDList(Class<T> cls,
-                                                List<I> ids,
-                                                String columns) throws Exception;
+            List<I> ids,
+            String columns) throws Exception;
 
     /**
      * 根据条件获取一条记录
@@ -332,9 +350,9 @@ public abstract class DaoHelper {
      * @throws Exception
      */
     public abstract <T> T getOneByQuery(Class<T> cls,
-                                        DbQuery query,
-                                        String columns,
-                                        String orderBy) throws Exception;
+            Query query,
+            String columns,
+            String orderBy) throws Exception;
 
     /**
      * 获取指定条件的所有记录
@@ -347,9 +365,9 @@ public abstract class DaoHelper {
      * @throws Exception
      */
     public abstract <T> List<T> getsByQuery(Class<T> cls,
-                                            DbQuery query,
-                                            String columns,
-                                            String orderBy) throws Exception;
+            Query query,
+            String columns,
+            String orderBy) throws Exception;
 
     /**
      * 分页获取指定条件的记录
@@ -364,16 +382,16 @@ public abstract class DaoHelper {
      * @throws Exception
      */
     public abstract <T> List<T> getsByQuery(Class<T> cls,
-                                            DbQuery query,
-                                            int page,
-                                            int pageSize,
-                                            String columns,
-                                            String orderBy) throws Exception;
+            Query query,
+            int page,
+            int pageSize,
+            String columns,
+            String orderBy) throws Exception;
 
     /**
      * 自定义查询
      * 例：
-     * DbQuery query = new DbQuery();
+     * Query query = new Query();
      * query.select()
      * .from("tbl_order")
      * .where()
@@ -385,7 +403,7 @@ public abstract class DaoHelper {
      * 生成的SQL为：SELECT *  FROM tbl_order WHERE  id  =?  AND  add_time  >?  ORDER BY id DESC LIMIT ?,?
      * <p>
      * <p>
-     * DbQuery query = new DbQuery();
+     * Query query = new Query();
      * query.select("order.id,user.userid")
      * .from("tbl_order", "order")
      * .innerJoin("tbl_user", "user", "order.userid", "user.userid")
@@ -402,7 +420,7 @@ public abstract class DaoHelper {
      * @return
      * @throws Exception
      */
-    public abstract <T> List<T> selectByQuery(Class<T> cls, DbQuery querySQL) throws Exception;
+    public abstract <T> List<T> selectByQuery(Class<T> cls, Query querySQL) throws Exception;
 
     /**
      * 根据条件查询count
@@ -412,7 +430,7 @@ public abstract class DaoHelper {
      * @return
      * @throws Exception
      */
-    public abstract int count(Class<?> cls, DbQuery query) throws Exception;
+    public abstract int count(Class<?> cls, Query query) throws Exception;
 
     /**
      * 自定义完整的SQL语句查询count
@@ -421,7 +439,7 @@ public abstract class DaoHelper {
      * @return
      * @throws Exception
      */
-    public abstract int count(DbQuery fullSQL) throws Exception;
+    public abstract int count(Query fullSQL) throws Exception;
 
     /**
      * 按sql语句查询

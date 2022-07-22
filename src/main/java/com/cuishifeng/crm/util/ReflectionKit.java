@@ -20,7 +20,7 @@ import java.lang.reflect.Type;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.cuishifeng.crm.DaoHelper;
+import com.cuishifeng.crm.dao.DaoHelper;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
