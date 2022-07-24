@@ -14,6 +14,7 @@
 
 package com.cuishifeng.crm.core;
 
+import com.google.common.collect.Lists;
 import org.junit.Test;
 
 import com.cuishifeng.crm.DataSourceTest;
@@ -21,6 +22,8 @@ import com.cuishifeng.crm.StartCRUD;
 import com.cuishifeng.crm.dao.DaoHelper;
 import com.cuishifeng.crm.dao.SimpleDAOHelper;
 import com.cuishifeng.crm.service.User;
+
+import java.util.stream.Stream;
 
 /**
  * @author cuishifeng <cuishifeng@kuaishou.com>
@@ -36,6 +39,15 @@ public class SelectTest {
     public void testGetOne() throws Exception {
         SimpleDAOHelper simpleDAOHelper = DaoHelper.createInstance(DataSourceTest.getDataSource());
         User user1 = StartCRUD.select(User::getName).getOne(User.class, 1);
+        // StartCRUD.select().where().eq(true,User::getId,1)
         System.out.println(user1);
+    }
+
+
+    @Test
+    public void test(){
+        Stream.of(Lists.newArrayList(1,2,3)).filter(x -> x.equals(1));
+        // CRUD.select().from().where().eq().one()
+        // CRUD.selectOne(User.class , id);
     }
 }

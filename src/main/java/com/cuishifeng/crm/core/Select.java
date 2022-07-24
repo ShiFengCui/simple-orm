@@ -17,6 +17,7 @@ package com.cuishifeng.crm.core;
 import java.util.List;
 
 import com.cuishifeng.crm.dao.SimpleDAOHelper;
+import com.cuishifeng.crm.query.Query;
 import com.cuishifeng.crm.query.Where;
 
 /**
@@ -40,6 +41,10 @@ public class Select {
 
     public <T, I> T getOne(Class<T> cls, I id) throws Exception {
         return simpleDAOHelper.getByID(cls, id, columns);
+    }
+
+    public <T> T getOne(Class<T> cls, Query query) throws Exception {
+        return simpleDAOHelper.getOneByQuery(cls, query, columns,"");
     }
 
     public Where where() {

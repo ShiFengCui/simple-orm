@@ -38,6 +38,10 @@ public class LambdaDbQuery<T> implements Query, SQL<LambdaDbQuery, SFunction<T, 
 
     }
 
+    public DbQuery getDbQuery() {
+        return dbQuery;
+    }
+
     @Override
     public String toSql() {
         return dbQuery.toSql();
